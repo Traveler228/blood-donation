@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transfusion_points', function (Blueprint $table) {
+        Schema::create('blood_types', function (Blueprint $table) {
             $table->id();
-            $table->string('available_blood')->nullable();
-            $table->string('missing_blood')->nullable();
-            $table->string('city');
-            $table->string('full_address');
-            $table->json('geolocation');
+            $table->string('type');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transfusion_points');
+        Schema::dropIfExists('blood_types');
     }
 };

@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('transfusion_point_users', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedInteger('transfusion_point_id');
             $table->unsignedInteger('user_id');
-
             $table->index('transfusion_point_id', 'trans_point_user_trans_point_idx');
             $table->index('user_id', 'trans_point_user_user_idx');
-
             $table->foreign('transfusion_point_id', 'trans_point_user_trans_point_fk')->on('users')->references('id');
             $table->foreign('user_id', 'trans_point_user_user_fk')->on('transfusion_points')->references('id');
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

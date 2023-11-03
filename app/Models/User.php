@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,9 +21,14 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class, 'user_id', 'id');
     }
 
-    public function transfusion_points(): BelongsToMany
+    public function transfusionPoints(): BelongsToMany
     {
         return $this->belongsToMany(TransfusionPoint::class, 'transfusion_point_users', 'user_id', 'transfusion_point_id');
+    }
+
+    public function userInfo(): HasOne
+    {
+        return $this->hasOne(UserInfo::class);
     }
 
     /**

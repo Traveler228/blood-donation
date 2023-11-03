@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transfusion_points', function (Blueprint $table) {
+        Schema::create('user_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('available_blood')->nullable();
-            $table->string('missing_blood')->nullable();
+            $table->date('is_honorary')->default(null);
+            $table->unsignedInteger('number_donations')->nullable();
+            $table->string('blood_type');
             $table->string('city');
-            $table->string('full_address');
-            $table->json('geolocation');
+            $table->unsignedInteger('user_id');
+            $table->index('user_id', 'info_user_idx');
+            $table->foreign('user_id', 'info_user_fk')->on('users')->references('id');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transfusion_points');
+        Schema::dropIfExists('user_infos');
     }
 };
