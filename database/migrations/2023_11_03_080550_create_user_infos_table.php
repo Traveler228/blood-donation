@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('user_infos', function (Blueprint $table) {
             $table->id();
             $table->date('is_honorary')->default(null);
-            $table->unsignedInteger('number_donations')->nullable();
             $table->string('blood_type');
             $table->string('city');
             $table->unsignedInteger('user_id');

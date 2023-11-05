@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->index('transfusion_point_id', 'trans_point_blood_type_trans_point_idx');
             $table->index('blood_type_id', 'trans_point_blood_type_blood_type_idx');
-            $table->foreign('transfusion_point_id', 'trans_point_blood_type_trans_point_fk')->on('blood_types')->references('id');
-            $table->foreign('blood_type_id', 'trans_point_blood_type_blood_type_fk')->on('transfusion_points')->references('id');
+            $table->foreign('transfusion_point_id', 'trans_point_blood_type_trans_point_fk')->on('transfusion_points')->references('id');
+            $table->foreign('blood_type_id', 'trans_point_blood_type_blood_type_fk')->on('blood_types')->references('id');
             $table->timestamps();
             $table->softDeletes();
         });

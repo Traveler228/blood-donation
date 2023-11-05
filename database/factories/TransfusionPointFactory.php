@@ -17,7 +17,9 @@ class TransfusionPointFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'city'=>fake()->city,
+            'full_address'=>fake()->address,
+            'geolocation'=>json_encode(['location' => ['x', 'y']]),
         ];
     }
 }

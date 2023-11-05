@@ -11,7 +11,6 @@ class BloodType extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = false;
     public function transfusionPoints(): BelongsToMany
     {
         return $this->belongsToMany(TransfusionPoint::class, 'blood_type_transfusion_points', 'blood_type_id', 'transfusion_point_id');

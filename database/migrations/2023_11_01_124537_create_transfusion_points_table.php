@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('transfusion_points', function (Blueprint $table) {
             $table->id();
-            $table->string('available_blood')->nullable();
-            $table->string('missing_blood')->nullable();
             $table->string('city');
             $table->string('full_address');
             $table->json('geolocation');

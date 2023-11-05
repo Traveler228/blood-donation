@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->index('transfusion_point_id', 'trans_point_user_trans_point_idx');
             $table->index('user_id', 'trans_point_user_user_idx');
-            $table->foreign('transfusion_point_id', 'trans_point_user_trans_point_fk')->on('users')->references('id');
-            $table->foreign('user_id', 'trans_point_user_user_fk')->on('transfusion_points')->references('id');
+            $table->foreign('transfusion_point_id', 'trans_point_user_trans_point_fk')->on('transfusion_points')->references('id')->onDelete('cascade');
+            $table->foreign('user_id', 'trans_point_user_user_fk')->on('users')->references('id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
