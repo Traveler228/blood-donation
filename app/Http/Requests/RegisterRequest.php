@@ -24,6 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             'surname' => 'required|string|between:2,100',
             'name' => 'required|string|between:2,100',
+            'patronymic' => 'string|between:2,100',
             'date_of_birth' => 'required|date',
             'login' => 'required|string|min:6|max:100|unique:users',
             'email' => 'required|string|email|max:100|unique:users',
