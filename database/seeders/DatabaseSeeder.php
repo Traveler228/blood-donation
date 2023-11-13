@@ -46,36 +46,5 @@ class DatabaseSeeder extends Seeder
             $bloodTypesId = $bloodTypes->random(rand(7, 8))->pluck('id');
             $item->bloodTypes()->attach($bloodTypesId, ['quantity' => rand(1000, 10000)]);
         }
-
-
-
-
-
-
-
-
-
-
-
-//        for ($i = 1; $i <= 100; $i++) {
-//        \App\Models\User::factory()
-//            ->hasUserInfo()
-//            ->hasDonations(rand(1, 25))
-//            ->create();
-//        }
-//
-//
-//        foreach(range(1, 50) as $index)
-//        {
-//            DB::table('transfusion_point_users')->insert([
-//                'transfusion_point_id' => rand(1,30),
-//                'user_id' => fake()->unique()->numberBetween(1, 30)
-//            ]);
-//        }
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
