@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\BloodType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,19 +26,12 @@ class UserFactory extends Factory
             'name' => fake()->name,
             'patronymic' => fake()->text(15),
             'date_of_birth' => fake()->date,
+            'city' => fake()->city,
+            'is_honorary' => fake()->randomElement([null, fake()->date()]),
+            'blood_id' => BloodType::get()->random()->id,
             'login' => fake()->unique()->word,
             'email' =>  fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-
-
-
-
-
-//            'name' => fake()->name(),
-//            'email' => fake()->unique()->safeEmail(),
-//            'email_verified_at' => now(),
-//            'password' => static::$password ??= Hash::make('password'),
-//            'remember_token' => Str::random(10),
         ];
     }
 

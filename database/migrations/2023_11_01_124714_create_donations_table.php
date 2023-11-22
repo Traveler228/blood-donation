@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->unsignedInteger('type_id');
             $table->date('date');
-            $table->string('confirming_document');
+            $table->string('confirming_document')->unique();
             $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
             $table->index('user_id', 'donation_user_idx');
             $table->foreign('user_id', 'donation_user_fk')->on('users')->references('id');
+
+            $table->index('type_id', 'donation_type_idx');
+            $table->foreign('type_id', 'donation_type_fk')->on('donation_types')->references('id');
         });
     }
 

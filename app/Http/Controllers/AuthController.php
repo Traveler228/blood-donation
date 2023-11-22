@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\User\RegisterRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
+
 class AuthController extends Controller
 {
     /**
@@ -68,10 +67,10 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return UserResource
      */
     public function user() {
-        return response()->json(auth()->user());
+        return new UserResource(auth()->user());
     }
     /**
      * Get the token array structure.

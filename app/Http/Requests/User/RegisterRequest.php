@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,8 +26,12 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|between:2,100',
             'patronymic' => 'string|between:2,100',
             'date_of_birth' => 'required|date',
+            'city' => 'required|string|between:2,25',
+            'blood_id' => 'required|integer|between:1,8',
+            'is_honorary' => 'date',
             'login' => 'required|string|min:6|max:100|unique:users',
             'email' => 'required|string|email|max:100|unique:users',
+            'role' => 'string',
             'password' => 'required|string|confirmed|min:6',
         ];
     }

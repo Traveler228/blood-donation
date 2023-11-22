@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\BloodType;
 use App\Models\Donation;
+use App\Models\DonationType;
 use App\Models\TransfusionPoint;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -27,10 +28,17 @@ class DatabaseSeeder extends Seeder
                 ]);
         }
 
+        $donationType = ['whole blood', 'blood plasma', 'blood cells'];
+        foreach ($donationType as $item) {
+            DonationType::factory()
+                ->create([
+                    'type' => $item,
+                ]);
+        }
+
         $transfusionPoints = TransfusionPoint::factory(30)->create();
 
         $users = User::factory(100)
-            ->hasUserInfo()
             ->create();
 
         Donation::factory(400)->create();
@@ -43,8 +51,9 @@ class DatabaseSeeder extends Seeder
         $bloodTypes = BloodType::all();
 
         foreach ($transfusionPoints as $item) {
-            $bloodTypesId = $bloodTypes->random(rand(7, 8))->pluck('id');
+            $bloodTypesId = $bloodTypes->pluck('id');
             $item->bloodTypes()->attach($bloodTypesId, ['quantity' => rand(1000, 10000)]);
         }
+
     }
 }

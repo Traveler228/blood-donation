@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -25,11 +26,6 @@ class User extends Authenticatable implements JWTSubject
     public function transfusionPoints(): BelongsToMany
     {
         return $this->belongsToMany(TransfusionPoint::class, 'transfusion_point_users', 'user_id', 'transfusion_point_id');
-    }
-
-    public function userInfo(): HasOne
-    {
-        return $this->hasOne(UserInfo::class);
     }
 
     /**

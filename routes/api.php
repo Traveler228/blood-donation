@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\BloodTypeTransfusionPointController;
+use App\Http\Controllers\Api\DonationController;
+use App\Http\Controllers\Api\TransfusionPointController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -35,7 +39,23 @@ Route::group([
 });
 
 Route::group(['middleware' => ['jwt.verify']], function(){
-
+    Route::get('/my-blood-points', [UserController::class, 'listBloodPoints']);
+    Route::get('/missing-blood', [TransfusionPointController::class, 'missingBlood']);
+    Route::get('/honorary-donors', [UserController::class, 'honoraryDonors']);
+    Route::get('/possibility-donation', [UserController::class, 'possibilityDonation']);
 
 });
+
+Route::group(['middleware' => ['jwt.verify', 'admin']], function(){
+    Route::apiResources([
+        'users' => UserController::class,
+        'transfusion-points' => TransfusionPointController::class,
+        'donations' => DonationController::class,
+    ]);
+
+});
+
+
+
+
 

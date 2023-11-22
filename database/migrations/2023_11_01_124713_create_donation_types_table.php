@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_infos', function (Blueprint $table) {
+        Schema::create('donation_types', function (Blueprint $table) {
             $table->id();
-            $table->date('is_honorary')->default(null);
-            $table->string('blood_type');
-            $table->string('city');
-            $table->unsignedInteger('user_id');
-            $table->index('user_id', 'info_user_idx');
-            $table->foreign('user_id', 'info_user_fk')->on('users')->references('id');
+            $table->string('type');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_infos');
+        Schema::dropIfExists('donation_types');
     }
 };

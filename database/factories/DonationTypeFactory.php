@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BloodType>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DonationType>
  */
-class BloodTypeFactory extends Factory
+class DonationTypeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +17,7 @@ class BloodTypeFactory extends Factory
     public function definition(): array
     {
         return [
-
+            //
         ];
     }
 }

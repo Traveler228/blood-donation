@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\DonationType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -19,10 +20,10 @@ class DonationFactory extends Factory
     public function definition(): array
     {
         return [
-            'type'=>fake()->randomElement(['whole blood', 'blood plasma', 'blood cells']),
-            'date'=>fake()->date,
-            'confirming_document'=>Str::random(15),
-            'user_id'=>User::get()->random()->id,
+            'type_id' => DonationType::get()->random()->id,
+            'date'=> fake()->date,
+            'confirming_document'=> fake()->unique()->asciify('***************'),
+            'user_id'=> User::get()->random()->id,
         ];
     }
 }
