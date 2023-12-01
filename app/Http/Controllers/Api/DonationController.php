@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Donation\DonationStoreRequest;
 use App\Http\Requests\Donation\DonationUpdateRequest;
-use App\Http\Resources\Donation\DonationResource;
 use App\Models\Donation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -39,7 +38,7 @@ class DonationController extends Controller
 
         $countDonation = Donation::where('user_id', '=', $request->user_id)->count();
 
-        if ($countDonation >= 40) {
+        if ($countDonation >= 10) {
             User::find($request->user_id)->update([
                 'is_honorary' => Carbon::now()->toDateString(),
             ]);
@@ -69,12 +68,7 @@ class DonationController extends Controller
      */
     public function update(DonationUpdateRequest $request, string $id)
     {
-        Donation::find($id)->update([
-            'type_id' => $request->type_id,
-            'date' => $request->date,
-            'confirming_document' => $request->confirming_document,
-            'user_id' => $request->user_id,
-        ]);
+        Donation::find($id)->update($request->validated());
 
         return Donation::query()
             ->join('blood_types', 'donations.type_id', '=', 'blood_types.id')

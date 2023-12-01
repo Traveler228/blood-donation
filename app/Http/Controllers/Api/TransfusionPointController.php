@@ -68,7 +68,7 @@ class TransfusionPointController extends Controller
 
         return response()->json([
             'message' => 'Transfusion point successfully created',
-            'id_donation' => $pointId,
+            'id_transfuion_point' => $pointId,
         ], 201);
     }
 
@@ -90,11 +90,7 @@ class TransfusionPointController extends Controller
      */
     public function update(PointUpdateRequest $request, string $id)
     {
-        TransfusionPoint::find($id)->update([
-            'city' => $request->city,
-            'full_address' => $request->full_address,
-            'geolocation' => $request->geolocation,
-        ]);
+        TransfusionPoint::find($id)->update($request->validated());
 
         if (isset($request->blood)) {
             $data = json_decode($request->blood, true);
@@ -107,7 +103,7 @@ class TransfusionPointController extends Controller
 
         return response()->json([
             'message' => 'Transfusion point successfully updated',
-            'id_donation' => $id,
+            'id_transfuion_point' => $id,
         ], 201);
     }
 

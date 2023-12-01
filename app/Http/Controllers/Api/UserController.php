@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\RegisterRequest;
-use App\Http\Requests\User\UpdateRequest;
-use App\Http\Resources\TransfusionPoint\TransfusionPointResource;
-use App\Http\Resources\User\UserResource;
-use App\Models\TransfusionPoint;
+use App\Http\Requests\User\AdminUpdateRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -31,13 +27,13 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
         return User::query()
             ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
             ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')
             ->withCount('donations')
-            ->where('users.id', '=', $user->id)
+            ->where('users.id', '=', $id)
             ->orderBy('id')
             ->get();
     }
@@ -45,21 +41,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function userUpdate(UpdateRequest $request)
+    public function userUpdate(UserUpdateRequest $request)
     {
         if (isset(auth()->user()->id)) {
             $id = auth()->user()->id;
         }
 
-        User::find($id)->update([
-            'surname' => $request->surname,
-            'name' => $request->name,
-            'patronymic' => $request->patronymic,
-            'city' => $request->city,
-            'login' => $request->login,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        User::find($id)->update($request->validated());
 
         return User::query()
             ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
@@ -69,14 +57,9 @@ class UserController extends Controller
             ->get();
     }
 
-    public function adminUpdate(UpdateRequest $request, string $id)
+    public function adminUpdate(AdminUpdateRequest $request, string $id)
     {
-        User::find($id)->update([
-            'date_of_birth' => $request->date_of_birth,
-            'is_honorary' => $request->is_honorary,
-            'blood_id' => $request->blood_id,
-            'role' => $request->role,
-        ]);
+        User::find($id)->update($request->validated());
 
         return User::query()
             ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')

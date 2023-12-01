@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
 
     const ROLE = ['admin', 'user'];
 
-    protected $fillable = ['surname', 'name', 'patronymic', 'date_of_birth', 'city', 'blood_id', 'login', 'email', 'role', 'password'];
+    protected $fillable = ['surname', 'name', 'patronymic', 'date_of_birth', 'city', 'blood_id', 'is_honorary', 'login', 'email', 'role', 'password'];
 
     public function donations(): HasMany
     {
