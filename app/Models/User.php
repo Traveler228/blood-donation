@@ -18,6 +18,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    const ROLE = ['admin', 'user'];
+
+    protected $fillable = ['surname', 'name', 'patronymic', 'date_of_birth', 'city', 'blood_id', 'login', 'email', 'role', 'password'];
+
     public function donations(): HasMany
     {
         return $this->hasMany(Donation::class, 'user_id', 'id');
@@ -27,13 +31,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(TransfusionPoint::class, 'transfusion_point_users', 'user_id', 'transfusion_point_id');
     }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $guarded = false;
 
     /**
      * The attributes that should be hidden for serialization.

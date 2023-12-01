@@ -10,5 +10,5 @@ class TransfusionPointUser extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = false;
+    protected $fillable = ['transfusion_point_id', 'user_id'];
 }

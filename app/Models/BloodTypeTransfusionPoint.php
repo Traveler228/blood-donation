@@ -10,5 +10,5 @@ class BloodTypeTransfusionPoint extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = false;
+    protected $fillable = ['transfusion_point_id', 'blood_type_id', 'quantity'];
 }

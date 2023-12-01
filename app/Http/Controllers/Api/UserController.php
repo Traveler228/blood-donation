@@ -20,17 +20,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::all());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(RegisterRequest $request)
-    {
-        $createdUser = User::create($request->validated());
-
-        return new UserResource($createdUser);
+        return User::query()
+            ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')
+            ->withCount('donations')
+            ->orderBy('id')
+            ->paginate(20);
     }
 
     /**
@@ -38,45 +33,79 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        return User::query()
+            ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')
+            ->withCount('donations')
+            ->where('users.id', '=', $user->id)
+            ->orderBy('id')
+            ->get();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, User $user)
+    public function userUpdate(UpdateRequest $request)
     {
-        $user->update($request->validated());
-        return new UserResource($user);
+        if (isset(auth()->user()->id)) {
+            $id = auth()->user()->id;
+        }
+
+        User::find($id)->update([
+            'surname' => $request->surname,
+            'name' => $request->name,
+            'patronymic' => $request->patronymic,
+            'city' => $request->city,
+            'login' => $request->login,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        return User::query()
+            ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')
+            ->withCount('donations')
+            ->where('users.id', '=', $id)
+            ->get();
+    }
+
+    public function adminUpdate(UpdateRequest $request, string $id)
+    {
+        User::find($id)->update([
+            'date_of_birth' => $request->date_of_birth,
+            'is_honorary' => $request->is_honorary,
+            'blood_id' => $request->blood_id,
+            'role' => $request->role,
+        ]);
+
+        return User::query()
+            ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')
+            ->withCount('donations')
+            ->where('users.id', '=', $id)
+            ->get();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
-        $user->delete();
+        User::find($id)->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function listBloodPoints()
-    {
-        if (isset(auth()->user()->city)) {
-            $city = auth()->user()->city;
-        }
-
-        $points = TransfusionPoint::where('transfusion_points.city', '=', $city)->get();
-
-        return TransfusionPointResource::collection($points);
-    }
-
     public function honoraryDonors()
     {
-        $honorary = User::whereNotNull('users.is_honorary')->orderBy('is_honorary', 'desc')->get()->take(5);
-
-        return UserResource::collection($honorary);
-
+        return User::query()
+            ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.city', 'blood_types.type', 'users.is_honorary')
+            ->withCount('donations')
+            ->whereNotNull('users.is_honorary')
+            ->orderBy('is_honorary', 'desc')
+            ->get()
+            ->take(5);
     }
 
     public function possibilityDonation()
@@ -85,7 +114,7 @@ class UserController extends Controller
             $id = auth()->user()->id;
         }
 
-        $lastDonation = DB::table('users')
+        $lastDonation = User::query()
             ->join('donations', 'users.id', '=', 'donations.user_id')
             ->select('donations.date')
             ->where('donations.user_id', '=', $id)

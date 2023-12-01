@@ -11,6 +11,8 @@ class DonationType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['type'];
+
     public function donations(): HasMany
     {
         return $this->hasMany(Donation::class, 'type_id', 'id');

@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+
         $bloodType = ['O(+)', 'A(+)', 'B(+)', 'AB(+)', 'O(-)', 'A(-)', 'B(-)', 'AB(-)'];
         foreach ($bloodType as $item) {
             BloodType::factory()
@@ -28,6 +30,8 @@ class DatabaseSeeder extends Seeder
                 ]);
         }
 
+
+
         $donationType = ['whole blood', 'blood plasma', 'blood cells'];
         foreach ($donationType as $item) {
             DonationType::factory()
@@ -35,6 +39,10 @@ class DatabaseSeeder extends Seeder
                     'type' => $item,
                 ]);
         }
+
+        $this->call([
+        AdminSeeder::class,
+        ]);
 
         $transfusionPoints = TransfusionPoint::factory(30)->create();
 

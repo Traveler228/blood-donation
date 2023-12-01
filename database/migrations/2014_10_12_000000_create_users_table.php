@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('surname');
             $table->string('name');
             $table->string('patronymic')->nullable();
-            $table->date('date_of_birth');
-            $table->string('city');
-            $table->unsignedInteger('blood_id');
+            $table->date('date_of_birth')->nullable();
+            $table->string('city')->nullable();
+            $table->unsignedInteger('blood_id')->nullable();
             $table->date('is_honorary')->nullable()->default(null);
             $table->string('login')->unique();
             $table->string('email')->unique();

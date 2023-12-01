@@ -18,7 +18,11 @@ class DonationController extends Controller
      */
     public function index()
     {
-        return DonationResource::collection(Donation::all());
+        return Donation::query()
+            ->join('blood_types', 'donations.type_id', '=', 'blood_types.id')
+            ->select('donations.id', 'blood_types.type', 'date', 'confirming_document', 'donations.user_id')
+            ->orderBy('id')
+            ->paginate(20);
     }
 
     /**
@@ -26,7 +30,12 @@ class DonationController extends Controller
      */
     public function store(DonationStoreRequest $request)
     {
-        $createdDonation = Donation::create($request->validated());
+        $id = Donation::create([
+            'type_id' => $request->type_id,
+            'date' => $request->date,
+            'confirming_document' => $request->confirming_document,
+            'user_id' => $request->user_id,
+        ])->id;
 
         $countDonation = Donation::where('user_id', '=', $request->user_id)->count();
 
@@ -36,33 +45,52 @@ class DonationController extends Controller
             ]);
         }
 
-        return new DonationResource($createdDonation);
+        return response()->json([
+            'message' => 'Donation successfully created',
+            'id_donation' => $id,
+            ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Donation $donation)
+    public function show(string $id)
     {
-        return new DonationResource($donation);
+        return Donation::query()
+            ->join('blood_types', 'donations.type_id', '=', 'blood_types.id')
+            ->select('donations.id', 'blood_types.type', 'date', 'confirming_document', 'donations.user_id')
+            ->where('donations.id', '=', $id)
+            ->orderBy('id')
+            ->get();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DonationUpdateRequest $request, Donation $donation)
+    public function update(DonationUpdateRequest $request, string $id)
     {
-        $donation->update($request->validated());
+        Donation::find($id)->update([
+            'type_id' => $request->type_id,
+            'date' => $request->date,
+            'confirming_document' => $request->confirming_document,
+            'user_id' => $request->user_id,
+        ]);
 
-        return new DonationResource($donation);
+        return Donation::query()
+            ->join('blood_types', 'donations.type_id', '=', 'blood_types.id')
+            ->select('donations.id', 'blood_types.type', 'date', 'confirming_document', 'donations.user_id')
+            ->where('donations.id', '=', $id)
+            ->orderBy('id')
+            ->get();
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Donation $donation)
+    public function destroy(string $id)
     {
-        $donation->delete();
+        Donation::find($id)->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

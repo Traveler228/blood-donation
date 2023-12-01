@@ -19,7 +19,7 @@ class TransfusionPointFactory extends Factory
         return [
             'city'=>fake()->city,
             'full_address'=>fake()->address,
-            'geolocation'=>json_encode(['location' => ['x', 'y']]),
+            'geolocation'=>json_encode(["x" => (string) rand(), "y" => (string) rand()]),
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\RoleUserMiddleware;
+use App\Http\Middleware\AdminUserMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,6 +66,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
-        'admin' => RoleUserMiddleware::class,
+        'admin' => AdminUserMiddleware::class,
     ];
 }

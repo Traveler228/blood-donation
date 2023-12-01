@@ -11,7 +11,7 @@ class TransfusionPoint extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = false;
+    protected $fillable = ['city', 'full_address', 'geolocation'];
 
     public function users(): BelongsToMany
     {

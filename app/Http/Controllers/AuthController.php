@@ -38,12 +38,20 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request) {
-        $user = User::create(array_merge(
-            $request->validated(),
-            ['password' => bcrypt($request->password)]
-        ));
+        $userId = User::create([
+            'surname' => $request->surname,
+            'name' => $request->name,
+            'patronymic' => $request->patronymic,
+            'date_of_birth' => $request->date_of_birth,
+            'city' => $request->city,
+            'blood_id' => $request->blood_id,
+            'login' => $request->login,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            ])->id;
         return response()->json([
             'message' => 'User successfully registered',
+            'user_id' => $userId,
         ], 201);
     }
 
@@ -67,10 +75,10 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return UserResource
+     * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     public function user() {
-        return new UserResource(auth()->user());
+        return auth()->user();
     }
     /**
      * Get the token array structure.

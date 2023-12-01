@@ -10,5 +10,5 @@ class Donation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = false;
+    protected $fillable = ['type_id', 'date', 'confirming_document', 'user_id'];
 }
