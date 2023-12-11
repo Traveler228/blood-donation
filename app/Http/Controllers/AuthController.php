@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BloodTypesEnum;
 use App\Http\Requests\User\RegisterRequest;
-use App\Http\Resources\User\UserResource;
 use App\Models\User;
 
 class AuthController extends Controller

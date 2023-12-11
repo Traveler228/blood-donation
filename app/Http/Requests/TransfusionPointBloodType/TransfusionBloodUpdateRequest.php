@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Donation;
+namespace App\Http\Requests\TransfusionPointBloodType;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DonationStoreRequest extends FormRequest
+class TransfusionBloodUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +22,7 @@ class DonationStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type_id' => 'required|integer|between:1,3',
-            'date' => 'required|date',
-            'confirming_document' => 'required|mimes:jpg,jpeg,png|max:2048',
-            'user_id' => 'required|integer',
+            'blood' => 'json',
         ];
     }
 }

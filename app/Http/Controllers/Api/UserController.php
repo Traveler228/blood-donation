@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\BloodTypesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AdminUpdateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
@@ -16,6 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
+
         return User::query()
             ->leftJoin('blood_types', 'users.blood_id', '=', 'blood_types.id')
             ->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.date_of_birth', 'users.city', 'blood_types.type', 'users.is_honorary')

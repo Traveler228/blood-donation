@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransfusionPoint\PointStoreRequest;
 use App\Http\Requests\TransfusionPoint\PointUpdateRequest;
-use App\Http\Requests\TransfusionPoint\TypePointRequest;
-use App\Http\Resources\TransfusionPoint\BloodTypeTransfusionPointsResource;
-use App\Http\Resources\TransfusionPoint\TransfusionPointResource;
 use App\Models\BloodType;
 use App\Models\BloodTypeTransfusionPoint;
 use App\Models\TransfusionPoint;
@@ -41,31 +38,6 @@ class TransfusionPointController extends Controller
             'geolocation' => $request->geolocation,
         ])->id;
 
-        if (isset($request->blood)) {
-            $data = array(
-                '1' => 0,
-                '2' => 0,
-                '3' => 0,
-                '4' => 0,
-                '5' => 0,
-                '6' => 0,
-                '7' => 0,
-                '8' => 0,
-            );
-
-            $datablood = json_decode($request->blood, true);
-
-            foreach($datablood as $key => $value)
-            {
-                $data[$key] = $value;
-            }
-
-            foreach ($data as $key => $value) {
-                $item = BloodType::find($key);
-                $item->transfusionPoints()->attach($pointId, ['quantity' => $value]);
-            }
-        }
-
         return response()->json([
             'message' => 'Transfusion point successfully created',
             'id_transfuion_point' => $pointId,
@@ -91,15 +63,6 @@ class TransfusionPointController extends Controller
     public function update(PointUpdateRequest $request, string $id)
     {
         TransfusionPoint::find($id)->update($request->validated());
-
-        if (isset($request->blood)) {
-            $data = json_decode($request->blood, true);
-
-            foreach ($data as $key => $value) {
-                $item = BloodType::find($key);
-                $item->transfusionPoints()->updateExistingPivot($id, ['quantity' => $value]);
-            }
-        }
 
         return response()->json([
             'message' => 'Transfusion point successfully updated',

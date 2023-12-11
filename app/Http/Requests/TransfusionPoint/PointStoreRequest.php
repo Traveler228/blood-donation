@@ -25,7 +25,6 @@ class PointStoreRequest extends FormRequest
             'city' => 'required|string|between:2,25',
             'full_address' => 'required|string',
             'geolocation' => 'required|json',
-            'blood' => 'json',
         ];
     }
 }

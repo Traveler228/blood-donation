@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\DonationController;
+use App\Http\Controllers\Api\TransfusionPointBloodTypeController;
 use App\Http\Controllers\Api\TransfusionPointController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -59,6 +60,8 @@ Route::group(['middleware' => ['jwt.verify', 'admin']], function(){
     Route::get('/transfusion-points/{id}', [TransfusionPointController::class, 'show']);
     Route::put('/transfusion-points/{id}', [TransfusionPointController::class, 'update']);
     Route::delete('/transfusion-points/{id}', [TransfusionPointController::class, 'destroy']);
+
+    Route::put('/transfusion-blood/{id}', [TransfusionPointBloodTypeController::class, 'update']);
 
     Route::get('/donations', [DonationController::class, 'index']);
     Route::post('/donations', [DonationController::class, 'store']);

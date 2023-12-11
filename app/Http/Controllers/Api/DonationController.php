@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\BloodTypesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Donation\DonationStoreRequest;
 use App\Http\Requests\Donation\DonationUpdateRequest;
 use App\Models\Donation;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class DonationController extends Controller
 {
@@ -29,20 +33,28 @@ class DonationController extends Controller
      */
     public function store(DonationStoreRequest $request)
     {
-        $id = Donation::create([
-            'type_id' => $request->type_id,
-            'date' => $request->date,
-            'confirming_document' => $request->confirming_document,
-            'user_id' => $request->user_id,
-        ])->id;
+        try {
+            $id = Donation::create([
+                'type_id' => $request->type_id,
+                'date' => $request->date,
+                'confirming_document' => Storage::putFile('ConfirmingDocuments', $request->file('confirming_document')),
+                'user_id' => $request->user_id,
+            ])->id;
 
-        $countDonation = Donation::where('user_id', '=', $request->user_id)->count();
+            $countDonation = Donation::where('user_id', '=', $request->user_id)->count();
 
-        if ($countDonation >= 10) {
-            User::find($request->user_id)->update([
-                'is_honorary' => Carbon::now()->toDateString(),
-            ]);
+            if ($countDonation >= 10) {
+                User::find($request->user_id)->update([
+                    'is_honorary' => Carbon::now()->toDateString(),
+                ]);
+            }
+        } catch (Exception $exception) {
+            return response()->json([
+                'message' => 'Failed to create donation',
+                'id_donation' => $id,
+            ], 404);
         }
+
 
         return response()->json([
             'message' => 'Donation successfully created',

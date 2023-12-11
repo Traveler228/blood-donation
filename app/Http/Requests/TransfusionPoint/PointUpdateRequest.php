@@ -25,7 +25,6 @@ class PointUpdateRequest extends FormRequest
             'city' => 'string|between:2,25',
             'full_address' => 'string',
             'geolocation' => 'json',
-            'blood' => 'json',
         ];
     }
 }
